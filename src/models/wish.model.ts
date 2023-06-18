@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-export interface IWish extends mongoose.Document {
+export interface IWish {
   name: string
   address?: string
   wish: string

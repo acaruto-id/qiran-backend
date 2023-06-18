@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import wishModel, { type IWish } from './wish.model'
 
-export interface IInvitation extends mongoose.Document {
+export interface IInvitation {
   quote: {
     content: string
     verse?: string
@@ -25,7 +25,9 @@ export interface IInvitation extends mongoose.Document {
     image?: string
     content: string
   }>
-  gallery: string[]
+  gallery: Array<{
+    url: string
+  }>
   timelines: Array<{
     title: string
     date: Date
@@ -112,7 +114,10 @@ const Invitation = new mongoose.Schema<IInvitation>({
   ],
   gallery: [
     {
-      type: String
+      url: {
+        type: String,
+        required: true
+      }
     }
   ],
   timelines: [
