@@ -5,7 +5,7 @@ import fileUpload from 'express-fileupload'
 import mongoSanitize from 'express-mongo-sanitize'
 import helmet from 'helmet'
 import routes from './routes'
-import errorHandler from './utils/errorHandler'
+import { errorHandler, notFoundHandler } from './utils/customHandler'
 
 const app = express()
 
@@ -34,7 +34,8 @@ app.use(fileUpload({ createParentPath: true }))
 // v1 api routes
 app.use('/v1', routes)
 
-// handle error as JSON
+// handle error
+app.use(notFoundHandler)
 app.use(errorHandler)
 
 export default app

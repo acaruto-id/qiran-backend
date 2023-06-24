@@ -16,21 +16,42 @@ const index = asyncHandler(
 const store = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const invitationData = req.body
-    const invitation = await invitationService.createInvitation(invitationData)
-    res.status(httpStatus.CREATED).json({
-      message: 'Invitation created successfully',
-      data: invitation
-    })
+    try {
+      const invitation = await invitationService.createInvitation(
+        invitationData
+      )
+      res.status(httpStatus.CREATED).json({
+        message: 'Invitation created successfully',
+        data: invitation
+      })
+    } catch (error: any) {
+      if (error.name === 'ValidationError') {
+        res.status(httpStatus.BAD_REQUEST).json({
+          message: error.message
+        })
+      } else {
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+          message: error.message
+        })
+      }
+    }
   }
 )
 
 const show = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const invitation = await invitationService.getInvitationByID(req.params.id)
-    res.json({
-      message: 'Invitation retrieved successfully',
-      data: invitation
-    })
+
+    if (invitation === null) {
+      res.status(httpStatus.NOT_FOUND).json({
+        message: 'Invitation not found'
+      })
+    } else {
+      res.json({
+        message: 'Invitation retrieved successfully',
+        data: invitation
+      })
+    }
   }
 )
 

@@ -1,7 +1,7 @@
 import { type NextFunction, type Request, type Response } from 'express'
 import httpStatus from 'http-status'
 
-const errorHandler = (
+export const errorHandler = (
   err: Error,
   req: Request,
   res: Response,
@@ -19,4 +19,12 @@ const errorHandler = (
     })
 }
 
-export default errorHandler
+export const notFoundHandler = (
+  _req: Request,
+  res: Response,
+  _next: NextFunction
+): void => {
+  res.status(httpStatus.NOT_FOUND).json({
+    message: 'Resource not found'
+  })
+}
