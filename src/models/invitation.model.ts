@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import wishModel, { type IWish } from './wish.model'
 
-export interface IInvitation {
+export interface IInvitation extends mongoose.Document {
   quote: {
     content: string
     verse?: string

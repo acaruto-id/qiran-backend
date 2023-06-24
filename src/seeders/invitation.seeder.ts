@@ -1,8 +1,8 @@
 import invitationModel, { type IInvitation } from '../models/invitation.model'
 import { faker } from '@faker-js/faker'
 
-function createInvitation (): IInvitation {
-  const invitation: IInvitation = {
+function createInvitation (): any {
+  const invitation = {
     quote: {
       content: faker.lorem.sentence(),
       verse: faker.lorem.word()
