@@ -8,15 +8,37 @@ export const errorHandler = (
   _next: NextFunction
 ): void => {
   console.error(err.stack, req.body)
-  res
-    .status(
-      req.statusCode === undefined || req.statusCode === null
-        ? httpStatus.INTERNAL_SERVER_ERROR
-        : req.statusCode
-    )
-    .json({
-      message: err.message
-    })
+
+  switch (err.name) {
+    case 'ValidationError':
+      res.status(httpStatus.BAD_REQUEST).json({
+        message: err.message
+      })
+      return
+
+    case 'CastError':
+      res.status(httpStatus.BAD_REQUEST).json({
+        message: err.message
+      })
+      return
+
+    case 'DocumentNotFoundError':
+      res.status(httpStatus.NOT_FOUND).json({
+        message: err.message
+      })
+      return
+
+    default:
+      res
+        .status(
+          req.statusCode === undefined || req.statusCode === null
+            ? httpStatus.INTERNAL_SERVER_ERROR
+            : req.statusCode
+        )
+        .json({
+          message: err.message
+        })
+  }
 }
 
 export const notFoundHandler = (

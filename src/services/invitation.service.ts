@@ -1,3 +1,4 @@
+import { Error } from 'mongoose'
 import invitationModel, { type IInvitation } from '../models/invitation.model'
 
 const getAllInvitations = async (): Promise<IInvitation[]> => {
@@ -30,7 +31,10 @@ const updateInvitation = async (
 }
 
 const deleteInvitation = async (id: string): Promise<void> => {
-  await invitationModel.findByIdAndDelete(id)
+  const data = await invitationModel.findByIdAndDelete(id)
+  if (data === null) {
+    throw new Error.DocumentNotFoundError('Invitation not found')
+  }
 }
 
 export default {

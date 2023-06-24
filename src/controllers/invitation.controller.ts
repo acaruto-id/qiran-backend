@@ -2,6 +2,7 @@ import type { Request, Response } from 'express'
 import invitationService from '../services/invitation.service'
 import asyncHandler from 'express-async-handler'
 import httpStatus from 'http-status'
+import { Error } from 'mongoose'
 
 const index = asyncHandler(
   async (_req: Request, res: Response): Promise<void> => {
@@ -15,53 +16,38 @@ const index = asyncHandler(
 
 const store = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    const invitationData = req.body
-    try {
-      const invitation = await invitationService.createInvitation(
-        invitationData
-      )
-      res.status(httpStatus.CREATED).json({
-        message: 'Invitation created successfully',
-        data: invitation
-      })
-    } catch (error: any) {
-      if (error.name === 'ValidationError') {
-        res.status(httpStatus.BAD_REQUEST).json({
-          message: error.message
-        })
-      } else {
-        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-          message: error.message
-        })
-      }
-    }
+    const invitation = await invitationService.createInvitation(req.body)
+    res.status(httpStatus.CREATED).json({
+      message: 'Invitation created successfully',
+      data: invitation
+    })
   }
 )
 
 const show = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const invitation = await invitationService.getInvitationByID(req.params.id)
-
     if (invitation === null) {
-      res.status(httpStatus.NOT_FOUND).json({
-        message: 'Invitation not found'
-      })
-    } else {
-      res.json({
-        message: 'Invitation retrieved successfully',
-        data: invitation
-      })
+      throw new Error.DocumentNotFoundError(req.params.id)
     }
+
+    res.json({
+      message: 'Invitation retrieved successfully',
+      data: invitation
+    })
   }
 )
 
 const update = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    const invitationData = req.body
     const updatedInvitation = await invitationService.updateInvitation(
       req.params.id,
-      invitationData
+      req.body
     )
+    if (updatedInvitation === null) {
+      throw new Error.DocumentNotFoundError(req.params.id)
+    }
+
     res.json({
       message: 'Invitation updated successfully',
       data: updatedInvitation
@@ -71,8 +57,7 @@ const update = asyncHandler(
 
 const destroy = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    const invitationId = req.params.id
-    await invitationService.deleteInvitation(invitationId)
+    await invitationService.deleteInvitation(req.params.id)
     res.json({
       message: 'Invitation deleted successfully'
     })
