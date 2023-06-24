@@ -10,13 +10,13 @@ export interface IInvitation {
   endDate?: Date
   maleBride: {
     name: string
-    image: string
+    image?: string
     father?: string
     mother?: string
   }
   femaleBride: {
     name: string
-    image: string
+    image?: string
     father?: string
     mother?: string
   }
@@ -67,7 +67,7 @@ const Invitation = new mongoose.Schema<IInvitation>({
     },
     image: {
       type: String,
-      required: true
+      required: false
     },
     father: {
       type: String,
@@ -85,7 +85,7 @@ const Invitation = new mongoose.Schema<IInvitation>({
     },
     image: {
       type: String,
-      required: true
+      required: false
     },
     father: {
       type: String,
