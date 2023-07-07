@@ -26,9 +26,11 @@ const store = asyncHandler(
 
 const show = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    const invitation = await invitationService.getInvitationByID(req.params.id)
+    const invitation = await invitationService.getInvitationBySlug(
+      req.params.slug
+    )
     if (invitation === null) {
-      throw new Error.DocumentNotFoundError(req.params.id)
+      throw new Error.DocumentNotFoundError(req.params.slug)
     }
 
     res.json({
@@ -41,11 +43,11 @@ const show = asyncHandler(
 const update = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const updatedInvitation = await invitationService.updateInvitation(
-      req.params.id,
+      req.params.slug,
       req.body
     )
     if (updatedInvitation === null) {
-      throw new Error.DocumentNotFoundError(req.params.id)
+      throw new Error.DocumentNotFoundError(req.params.slug)
     }
 
     res.json({
@@ -57,7 +59,7 @@ const update = asyncHandler(
 
 const destroy = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    await invitationService.deleteInvitation(req.params.id)
+    await invitationService.deleteInvitation(req.params.slug)
     res.json({
       message: 'Invitation deleted successfully'
     })

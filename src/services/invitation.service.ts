@@ -14,27 +14,27 @@ const createInvitation = async (
   return invitation
 }
 
-const getInvitationByID = async (
-  id: string
+const getInvitationBySlug = async (
+  slug: string
 ): Promise<InvitationObject | null> => {
-  const invitation = await InvitationModel.findById(id)
+  const invitation = await InvitationModel.findOne({ slug })
   return invitation
 }
 
 const updateInvitation = async (
-  id: string,
+  slug: string,
   invitationData: Partial<InvitationObject>
 ): Promise<InvitationObject | null> => {
-  const invitation = await InvitationModel.findByIdAndUpdate(
-    id,
+  const invitation = await InvitationModel.findOneAndUpdate(
+    { slug },
     invitationData,
     { new: true }
   )
   return invitation
 }
 
-const deleteInvitation = async (id: string): Promise<void> => {
-  const data = await InvitationModel.findByIdAndDelete(id)
+const deleteInvitation = async (slug: string): Promise<void> => {
+  const data = await InvitationModel.findOneAndDelete({ slug })
   if (data === null) {
     throw new Error.DocumentNotFoundError('Invitation not found')
   }
@@ -43,7 +43,7 @@ const deleteInvitation = async (id: string): Promise<void> => {
 export default {
   getAllInvitations,
   createInvitation,
-  getInvitationByID,
+  getInvitationBySlug,
   updateInvitation,
   deleteInvitation
 }
