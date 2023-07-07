@@ -6,8 +6,8 @@ const invitationRouter = Router()
 invitationRouter
   .get('/', invitationController.index)
   .post('/', invitationController.store)
-  .get('/:id', invitationController.show)
-  .put('/:id', invitationController.update)
-  .delete('/:id', invitationController.destroy)
+  .get('/:slug', invitationController.show)
+  .put('/:slug', invitationController.update)
+  .delete('/:slug', invitationController.destroy)
 
 export default invitationRouter
