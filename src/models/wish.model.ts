@@ -1,12 +1,7 @@
 import mongoose from 'mongoose'
+import { type WishObject } from '../interfaces/mongoose.gen'
 
-export interface IWish {
-  name: string
-  address?: string
-  wish: string
-}
-
-const Wish = new mongoose.Schema<IWish>({
+const Wish = new mongoose.Schema<WishObject>({
   name: {
     type: String,
     required: true
@@ -21,4 +16,4 @@ const Wish = new mongoose.Schema<IWish>({
   }
 })
 
-export default mongoose.model<IWish>('Wish', Wish)
+export default mongoose.model<WishObject>('Wish', Wish)
