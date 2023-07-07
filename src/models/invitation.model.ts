@@ -1,47 +1,24 @@
 import mongoose from 'mongoose'
-import wishModel, { type IWish } from './wish.model'
+import WishModel from './wish.model'
+import { type InvitationObject } from '../interfaces/mongoose.gen'
 
-export interface IInvitation {
-  quote: {
-    content: string
-    verse?: string
-  }
-  startDate: Date
-  endDate?: Date
-  maleBride: {
-    name: string
-    image?: string
-    father?: string
-    mother?: string
-  }
-  femaleBride: {
-    name: string
-    image?: string
-    father?: string
-    mother?: string
-  }
-  stories: Array<{
-    title: string
-    image?: string
-    content: string
-  }>
-  gallery: Array<{
-    url: string
-  }>
-  timelines: Array<{
-    title: string
-    date: Date
-    location?: string
-    locationURL?: string
-  }>
-  specialGuests: Array<{
-    name: string
-  }>
-  music?: string
-  wishes: IWish[]
-}
-
-const Invitation = new mongoose.Schema<IInvitation>({
+const Invitation = new mongoose.Schema<InvitationObject>({
+  title: {
+    type: String,
+    required: true
+  },
+  slug: {
+    type: String,
+    required: true
+  },
+  coverImage: {
+    type: String,
+    required: true
+  },
+  landingImage: {
+    type: String,
+    required: true
+  },
   quote: {
     content: {
       type: String,
@@ -134,7 +111,7 @@ const Invitation = new mongoose.Schema<IInvitation>({
         type: String,
         required: false
       },
-      locationString: {
+      url: {
         type: String,
         required: false
       }
@@ -152,7 +129,7 @@ const Invitation = new mongoose.Schema<IInvitation>({
     type: String,
     required: false
   },
-  wishes: [wishModel.schema]
+  wishes: [WishModel.schema]
 })
 
-export default mongoose.model<IInvitation>('Invitation', Invitation)
+export default mongoose.model<InvitationObject>('Invitation', Invitation)

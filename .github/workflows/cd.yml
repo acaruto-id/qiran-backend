@@ -22,4 +22,4 @@ jobs:
             git status
             npm ci
             npm run build
-            pm2 restart qiran
+            pm2 restart qiran-api
