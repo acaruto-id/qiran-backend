@@ -17,7 +17,7 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
           script: |
-            cd /var/www/qiran
+            cd /var/www/qiran-api
             git pull origin main
             git status
             npm ci
