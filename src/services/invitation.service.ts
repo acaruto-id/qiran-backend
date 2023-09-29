@@ -1,5 +1,8 @@
 import { Error } from 'mongoose'
-import { type InvitationObject } from '../interfaces/mongoose.gen'
+import type {
+  InvitationDocument,
+  InvitationObject
+} from '../interfaces/mongoose.gen'
 import InvitationModel from '../models/invitation.model'
 
 const getAllInvitations = async (): Promise<InvitationObject[]> => {
@@ -16,9 +19,9 @@ const createInvitation = async (
 
 const getInvitationBySlug = async (
   slug: string
-): Promise<InvitationObject | null> => {
+): Promise<InvitationDocument | null> => {
   const invitation = await InvitationModel.findOne({ slug })
-  return invitation
+  return invitation as InvitationDocument
 }
 
 const updateInvitation = async (
